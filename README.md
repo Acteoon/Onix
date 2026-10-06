@@ -1,4 +1,4 @@
-# CustomOS
+# Onix
 
 A bare-metal ARM64 kernel from scratch — built for QEMU virt emulation, targeting Raspberry Pi 4.
 
