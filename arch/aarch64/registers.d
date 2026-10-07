@@ -1,2 +1,1 @@
-platform/qemu_virt/registers.o: platform/qemu_virt/registers.c \
- include/registers.h
+arch/aarch64/registers.o: arch/aarch64/registers.c include/registers.h

@@ -20,7 +20,7 @@ el2_entry:                        // Entry point after leaving EL3, if present
     cmp     x0, #2                // If we are at EL2, set up EL2 state
     bne     el1_entry             // Otherwise, continue directly to EL1 setup
 
-    mov     x0, #(1 << 31)        // Set HCR_EL2.TGE bit to enable a 64-bit guest/EL1 environment
+    mov     x0, #(1 << 31)        // Set HCR_EL2.RW bit to enable a 64-bit guest/EL1 environment
     msr     hcr_el2, x0           // Write the Hypervisor Configuration Register
     mov     x0, #0x3C5            // Set SPSR_EL2: EL1, interrupts masked, execution state bits
     msr     spsr_el2, x0          // Save the EL1 state for later ERET
@@ -38,6 +38,10 @@ el1_entry:                        // Final privilege level before C kernel entry
 1:  str     x2, [x0], #8          // Store zero into one word at a time, then advance x0 by 8 bytes
     cmp     x0, x1                // Compare current pointer with the end address
     b.lo    1b                   // If x0 < x1, repeat until BSS is zeroed
+
+    ldr x0, =vector_table   // the label of your table (the one with .global)
+    msr vbar_el1, x0        // write the address into the register
+    isb                      // finish the write before continuing
 
     bl      kernel_main           // Call the C kernel entry point
 

@@ -7,7 +7,9 @@ CFLAGS = -Wall -Wextra -ffreestanding -nostdlib -mgeneral-regs-only \
          -Iinclude -Iplatform/qemu_virt -MMD
 LDFLAGS = -T kernel.ld -nostdlib
 
-OBJS = arch/aarch64/boot.o platform/qemu_virt/uart.o platform/qemu_virt/registers.o kernel/main.o
+SOURCES_C   := $(shell find arch kernel platform/qemu_virt -name '*.c')
+SOURCES_ASM := $(shell find arch kernel platform/qemu_virt -name '*.S')
+OBJS        := $(SOURCES_C:.c=.o) $(SOURCES_ASM:.S=.o)
 
 all: kernel.elf kernel.elf.dis
 
