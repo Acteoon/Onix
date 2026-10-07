@@ -15,7 +15,11 @@ void kernel_main(void)
 
     write_register_timer(REG_CNTP_TVAL, clock_frequency); //Set the timer to trigger an interrupt in 1 second
     write_register_timer(REG_CNTP_CTL, 1); //Enable the timer
+
+    gic_init(); //Initialize the GIC and enable the timer interrupt
+    asm volatile ("msr daifclr, #2" ::: "memory"); //Enable IRQs by clearing the I bit in the DAIF register -->
+    for(;;) {
+        // Wait for interrupts
+    }
    
 }
-
-//not working, check this code and also register.c; Might be cuz of the way read is set up...
